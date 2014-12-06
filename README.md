@@ -1,4 +1,4 @@
-﻿Le code de ce repository est celui du logiciel MiniCut2d Software, écrit en VB6.
+﻿##Le code de ce repository est celui du logiciel MiniCut2d Software, écrit en VB6.
 
 Il est publié avec les objectifs suivants :
 - réécrire le logiciel pour qu'il puisse fonctionner sous Windows, Linux et Mac,
@@ -7,8 +7,7 @@ Il est publié avec les objectifs suivants :
 
 Les sources sont fournies sous licence CECILL (compatible GNU GPL).
 
-Ci-dessous la description des diffénts modules du logiciel
-------------------------------------------------------------
+##Ci-dessous la description des différents modules du logiciel
 
 Informations générales :
 - Un fichier projet MiniCut2d (.mnc) contient les informations suivantes :
