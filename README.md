@@ -117,5 +117,6 @@ Les sources sont fournies sous licence CECILL (compatible GNU GPL).
 
 14. A propos.
 
+###Demande d'informations complémentaires :
 
-www.minicut2d.com - Renaud ILTIS
+Renaud ILTIS - contact@minicut2d.com
