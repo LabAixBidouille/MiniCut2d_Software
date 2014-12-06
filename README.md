@@ -1,7 +1,5 @@
 ﻿###Objet :
-
 **Le code de ce repository est celui du logiciel MiniCut2d Software, écrit en VB6 par Renaud ILTIS pour la machine de découpe par fil chaud "MiniCut2d".**
-
 Il est publié avec les objectifs suivants :
 - réécrire le logiciel pour qu'il puisse fonctionner sous Windows, Linux et Mac,
 - conserver la simplicité et la stabilité du logiciel actuel,
@@ -9,9 +7,7 @@ Il est publié avec les objectifs suivants :
 
 Les sources sont fournies sous licence CECILL (compatible GNU GPL).
 
-###Ci-dessous la description des différents modules du logiciel
-
-Informations générales :
+###Informations générales :
 - Un fichier projet MiniCut2d (.mnc) contient les informations suivantes :
 	* le nombre de séquences qui constituent le projet,
 	* le nombre de point de chaque séquence,
@@ -26,6 +22,7 @@ Informations générales :
 	
 Description des différents modules pour MiniCut2d Software (en essayant de prévoir l'évolution):
 
+###Description des différents modules du logiciel
 1 - Communication avec l'interface de type IPL5X reconnue comme périphérique HID (actuellement ce travail est réalisé par IPL5XCom.dll sur la base d'un tableau de 65 octets dont la première case est toujours vide, code en C fourni à la demande)
 	* Identification du périphérique
 	* Envoi d'octets
