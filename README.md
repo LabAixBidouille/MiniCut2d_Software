@@ -1,4 +1,6 @@
-﻿###Le code de ce repository est celui du logiciel MiniCut2d Software, écrit en VB6.
+﻿###Objet :
+
+**Le code de ce repository est celui du logiciel MiniCut2d Software, écrit en VB6 par Renaud ILTIS pour la machine de découpe par fil chaud "MiniCut2d".**
 
 Il est publié avec les objectifs suivants :
 - réécrire le logiciel pour qu'il puisse fonctionner sous Windows, Linux et Mac,
@@ -19,6 +21,8 @@ Informations générales :
 	* le type de sortie (idem).
 	
 - Penser tout de suite au multi-langues qui peut éventuellement être géré dans des fichiers texte séparés (actuellement les traductions sont contenues dans des modules compilés avec le .exe), mais prévoir toujours une valeur pas défaut dans le code en cas d'absence du fichier de langue.
+
+- L'interface USB de la MiniCut2d est la version de base de l'interpolateur IPL5X disponible sur le site 5xproject.
 	
 Description des différents modules pour MiniCut2d Software (en essayant de prévoir l'évolution):
 
