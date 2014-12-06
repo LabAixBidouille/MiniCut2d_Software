@@ -1,116 +1,116 @@
-Le code de ce repository est celui du logiciel MiniCut2d Software, écrit en VB6.
+ï»¿Le code de ce repository est celui du logiciel MiniCut2d Software, Ã©crit en VB6.
 
-Il est publié avec les objectifs suivants :
-- réécrire le logiciel pour qu'il puisse fonctionner sous Windows, Linux et Mac,
-- conserver la simplicité et la stabilité du logiciel actuel,
-- améliorer l'aspect visuel du logiciel (et peut-être aussi l'ergonomie).
+Il est publiÃ© avec les objectifs suivants :
+- rÃ©Ã©crire le logiciel pour qu'il puisse fonctionner sous Windows, Linux et Mac,
+- conserver la simplicitÃ© et la stabilitÃ© du logiciel actuel,
+- amÃ©liorer l'aspect visuel du logiciel (et peut-Ãªtre aussi l'ergonomie).
 
 Les sources sont fournies sous licence CECILL (compatible GNU GPL).
 
-Ci-dessous la description des différents modules du logiciel
+Ci-dessous la description des diffÃ©nts modules du logiciel
 ------------------------------------------------------------
 
-Informations générales :
+Informations gÃ©nÃ©rales :
 - Un fichier projet MiniCut2d (.mnc) contient les informations suivantes :
-	* le nombre de séquences qui constituent le projet,
-	* le nombre de point de chaque séquence,
-	* les coordonnées X:Y de chaque plan dans le repère de la machine,
-	* les dimensions du bloc de matière,
-	* le type d'entrée: 0=par la gauche; 1=par le haut; 2=par la droite,
+	* le nombre de sÃ©quences qui constituent le projet,
+	* le nombre de point de chaque sÃ©quence,
+	* les coordonnes X:Y de chaque plan dans le repÃ¨re de la machine,
+	* les dimensions du bloc de matiÃ¨re,
+	* le type d'entrÃ©e: 0=par la gauche; 1=par le haut; 2=par la droite,
 	* le type de sortie (idem).
 	
-- Penser tout de suite au multi-langues qui peut éventuellement être géré dans des fichiers texte séparés (actuellement les traductions sont contenues dans des modules compilés avec le .exe), mais prévoir toujours une valeur pas défaut dans le code en cas d'absence du fichier de langue.
+- Penser tout de suite au multi-langues qui peut Ã©ventuellement Ãªtre gÃ©rÃ© dans des fichiers texte sÃ©parÃ©s (actuellement les traductions sont contenues dans des modules compilÃ©s avec le .exe), mais prÃ©voir toujours une valeur pas dÃ©faut dans le code en cas d'absence du fichier de langue.
 	
-Description des différents modules pour MiniCut2d Software (en essayant de prévoir l'évolution):
+Description des diffÃ©rents modules pour MiniCut2d Software (en essayant de prÃ©voir l'Ã©volution):
 
-1 - Communication avec l'interface de type IPL5X reconnue comme périphérique HID (actuellement ce travail est réalisé par IPL5XCom.dll sur la base d'un tableau de 65 octets dont la première case est toujours vide, code en C fourni à la demande)
-	* Identification du périphérique
+1 - Communication avec l'interface de type IPL5X reconnue comme pÃ©riphÃ©rique HID (actuellement ce travail est rÃ©alisÃ© par IPL5XCom.dll sur la base d'un tableau de 65 octets dont la premiÃ¨re case est toujours vide, code en C fourni Ã  la demande)
+	* Identification du pÃ©riphÃ©rique
 	* Envoi d'octets
-	* Réception d'octets
+	* RÃ©ception d'octets
 	
 2 - Visionneuse de fichiers :
-	* Création d'une bibliothèque à l'installation du logiciel (=> ToDo : settings, choix de l'emplacement?).
-	* TreeView de représentation permettant de parcourir la bibliothèque.
-	* Fenêtre de visualisation du contenu du fichier.
-	* Fichiers traités : DXF, DAT, PLT (traités actuellement par cnctools.dll dont le code en C peut fourni à la demande), TXT (format : cf. site MiniCut2d), MNC (projet MiniCut2d, voir code), ToDo : SVG.
-	* Les profils fermés sont réorientés/renumérotés pour mettre le premier point vers l'origine suivant X (voir code) et la rotation en sens horaire.
-	* Les profils issus de DXF sont nettoyés (suppression des points alignés ou trop proches), voir code et fonction Nettoyage.
-	* Opérations élémentairs sur le contenu affiché : affichage du premier point, miroir, changement de sens.
+	* CrÃ©ation d'une bibliothÃ¨que Ã  l'installation du logiciel (=> ToDo : settings, choix de l'emplacement?).
+	* TreeView de reprÃ©sentation permettant de parcourir la bibliothÃ¨que.
+	* FenÃªtre de visualisation du contenu du fichier.
+	* Fichiers traitÃ©s : DXF, DAT, PLT (traitÃ©s actuellement par cnctools.dll dont le code en C peut fourni Ã  la demande), TXT (format : cf. site MiniCut2d), MNC (projet MiniCut2d, voir code), ToDo : SVG.
+	* Les profils fermÃ©s sont rÃ©orientÃ©s/renumÃ©rotÃ©s pour mettre le premier point vers l'origine suivant X (voir code) et la rotation en sens horaire.
+	* Les profils issus de DXF sont nettoyÃ©s (suppression des points alignÃ©s ou trop proches), voir code et fonction Nettoyage.
+	* OpÃ©rations Ã©lÃ©mentairs sur le contenu affichÃ© : affichage du premier point, miroir, changement de sens.
 
-3 - Création de projet :
-	* Fenêtre réprésentant la zone utile de la machine et le bloc.
+3 - CrÃ©ation de projet :
+	* FenÃªtre rÃ©prÃ©sentant la zone utile de la machine et le bloc.
 	* Saisie des dimensions du bloc.
-	* Intégration des séquences par drag and drop ou double-clic depuis la visionneuse.
-	* Affichage des séquences (en noir) et des jonctions (en vert) entre les séquences.
-	* Affichage dynamique de la jonction en fonction de l'emplacement de la nouvelle séquence importée par drag and drop (en rose tant que la séquence n'est pas posée).
-	* Zoom molette, déplacement de la vue, zoom bloc.
+	* IntÃ©gration des sÃ©quences par drag and drop ou double-clic depuis la visionneuse.
+	* Affichage des sÃ©quences (en noir) et des jonctions (en vert) entre les sÃ©quences.
+	* Affichage dynamique de la jonction en fonction de l'emplacement de la nouvelle sÃ©quence importÃ©e par drag and drop (en rose tant que la sÃ©quence n'est pas posÃ©e).
+	* Zoom molette, dÃ©placement de la vue, zoom bloc.
 	* Affichage des points.
-	* Alternance des couleurs des séquences pour les distinguer les unes des autres.
-	* Outils de sélection/déplacement/rotation/étirement (à la main ou par saisie de valeur), affichage dynamique de la dimension de la sélection.
-	* Outils de modification du premier point, de mesure, de coupe des séquences, de suppression de la sélection.
-	* Outils d'inversion de sens d'une ou plusieurs séquences.
+	* Alternance des couleurs des sÃ©quences pour les distinguer les unes des autres.
+	* Outils de sÃ©lection/dÃ©placement/rotation/Ã©tirement (Ã  la main ou par saisie de valeur), affichage dynamique de la dimension de la sÃ©lection.
+	* Outils de modification du premier point, de mesure, de coupe des sÃ©quences, de suppression de la sÃ©lection.
+	* Outils d'inversion de sens d'une ou plusieurs sÃ©quences.
 	* Outil d'insertion de point.
 	* Outil miroir.
 	* Outil dupliquer (ToDo : remplacer l'outil duliquer par Copier+Coller).
 	* Ajout de point par Drag and Drop.
-	* Outils de mise à l'échelle du bloc et de centrage horizontal et vertical (ToDo : case à cocher pour verrouiller ou non ces boutons).
-	* Outils d'alignement (ToDo : réduire la place prise par ces outils : boutons déroulants?).
-	* ToDo : outils de modification des points d'une séquence : déplacement d'un point, ajout, suppression.
+	* Outils de mise Ã  l'Ã©chelle du bloc et de centrage horizontal et vertical (ToDo : case Ã  cocher pour verrouiller ou non ces boutons).
+	* Outils d'alignement (ToDo : rÃ©duire la place prise par ces outils : boutons dÃ©roulants?).
+	* ToDo : outils de modification des points d'une sÃ©quence : dÃ©placement d'un point, ajout, suppression.
 
 4 - Gestion de fichiers :
-	* Sauvegarde en .mnc du projet, le .mnc a la structure d'un fichier .ini (voir code pour les sections et les clés).
-	* Export en .dxf du projet (actuellement réalisé par CNCTools.dll).
-	* Sauvegarde des répertoires utilisés dans "MiniCut2d Software.ini".
+	* Sauvegarde en .mnc du projet, le .mnc a la structure d'un fichier .ini (voir code pour les sections et les clÃ©s).
+	* Export en .dxf du projet (actuellement rÃ©alisÃ© par CNCTools.dll).
+	* Sauvegarde des rÃ©pertoires utilisÃ©s dans "MiniCut2d Software.ini".
 	* Boutons (et menus?) "Nouveau Projet", "Ouvrir", "Enregister", "Enregistrer sous...".
 
 5 - Vectorisation :
-	* Vectorisation d'images .jpg, .bmp ou .png intégrée au logiciel.
+	* Vectorisation d'images .jpg, .bmp ou .png intÃ©grÃ©e au logiciel.
 	* Recadrage.
-	* Curseur de réglage du contraste.
-	* Curseur de réglage du nettoyage des points.
-	* Sauvegarde en .dxf dans la bibliothèque (mise à jour du TreeView).
+	* Curseur de rÃ©glage du contraste.
+	* Curseur de rÃ©glage du nettoyage des points.
+	* Sauvegarde en .dxf dans la bibliothÃ¨que (mise Ã  jour du TreeView).
 	* Transfert dans la visionneuse.
 
-6 - Représentation de la découpe :
-	* Représentation graphique (simplifiée) de la machine en fonction de ses caractéristiques réelles (voir code).
-	* Représentation du projet : bloc, séquences assemblées.
-	* Choix du type d'entrée, du type de sortie et représentation graphique (attention, si elles sont de même type, décaler la représentation graphique pour qu'on voie les deux).
-	* Zoom bloc (Todo : Zoom molette et déplacement de la vue).
-	* Simulation du déplacement du fil.
+6 - ReprÃ©sentation de la dÃ©coupe :
+	* ReprÃ©sentation graphique (simplifiÃ©e) de la machine en fonction de ses caractÃ©ristiques rÃ©elles (voir code).
+	* ReprÃ©sentation du projet : bloc, sÃ©quences assemblÃ©es.
+	* Choix du type d'entrÃ©e, du type de sortie et reprÃ©sentation graphique (attention, si elles sont de mÃªme type, dÃ©caler la reprÃ©sentation graphique pour qu'on voie les deux).
+	* Zoom bloc (Todo : Zoom molette et dÃ©placement de la vue).
+	* Simulation du dÃ©placement du fil.
 
 7 - Choix du mode Normal - Expert
 
-8 - Base de données matières :
-	* Caractéristiques d'une matière : nom, chauffe, vitesse.
-	* Mémorisation dans "MiniCut2d Software.ini".
-	* Réglage chauffe.
-	* Réglage vitesse (mode Expert).
-	* Affichage par liste déroulante.
-	* Création d'une nouvelle matière.
-	* Suppression matière.
-	* Mise à jour matière.
+8 - Base de donnÃ©es matiÃ¨res :
+	* CaractÃ©ristiques d'une matiÃ¨re : nom, chauffe, vitesse.
+	* MÃ©morisation dans "MiniCut2d Software.ini".
+	* RÃ©glage chauffe.
+	* RÃ©glage vitesse (mode Expert).
+	* Affichage par liste dÃ©roulante.
+	* CrÃ©ation d'une nouvelle matiÃ¨re.
+	* Suppression matiÃ¨re.
+	* Mise Ã  jour matiÃ¨re.
 
-9 - Boutons de déplacements automatiques (les interrupteurs forment deux boucles, une boucle pour les origines et une boucle pour les fin de course) :
-	* Retour à l'origine (voir code).
+9 - Boutons de dÃ©placements automatiques (les interrupteurs forment deux boucles, une boucle pour les origines et une boucle pour les fin de course) :
+	* Retour Ã  l'origine (voir code).
 	* Retour en position de repos.
 
 10 - Pilotage manuel du fil :
-	* Marche - arrêt et réglage dynamique de la chauffe (prévoir tempo pour la mise en température du fil).
-	* Information sur l'état en cours.
-	* Mouvements suivant 8 directions + marche - arrêt.
+	* Marche - arrÃªt et rÃ©glage dynamique de la chauffe (prÃ©voir tempo pour la mise en tempÃ©rature du fil).
+	* Information sur l'Ã©tat en cours.
+	* Mouvements suivant 8 directions + marche - arrÃªt.
 	* Retour automatique suivant X, suivant Y.
-	* ToDo : déplacement d'une valeur saisie au clavier.
+	* ToDo : dÃ©placement d'une valeur saisie au clavier.
 
-11 - Lancement de la découpe :
-	* Choix du décalage (valeur fixe en mode Normal, plusieurs valeurs en mode Expert) : extérieur - sans - intérieur.
-	* Représentation graphique du décalage.
-	* Information sur l'état en cours.
-	* Lancement de la découpe.
+11 - Lancement de la dÃ©coupe :
+	* Choix du dÃ©calage (valeur fixe en mode Normal, plusieurs valeurs en mode Expert) : extÃ©rieur - sans - intÃ©rieur.
+	* ReprÃ©sentation graphique du dÃ©calage.
+	* Information sur l'Ã©tat en cours.
+	* Lancement de la dÃ©coupe.
 	* Modification dynamique de la chauffe.
-	* Arrêt de la découpe.
+	* ArrÃªt de la dÃ©coupe.
 	
-12 - Reprise de la découpe après stop :
-	* Choix entre annulation totale, retour origine, ou reprise de la découpe.
+12 - Reprise de la dÃ©coupe aprÃ¨s stop :
+	* Choix entre annulation totale, retour origine, ou reprise de la dÃ©coupe.
 	* Modification possible de la chauffe avant reprise.
 	* Choix du trajet de retour : horizontal, vertical, diagonal.
 	
