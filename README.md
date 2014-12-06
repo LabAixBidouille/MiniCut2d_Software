@@ -1,5 +1,6 @@
 ﻿###Objet :
 **Le code de ce repository est celui du logiciel MiniCut2d Software, écrit en VB6 par Renaud ILTIS pour la machine de découpe par fil chaud "MiniCut2d".**
+
 Il est publié avec les objectifs suivants :
 - réécrire le logiciel pour qu'il puisse fonctionner sous Windows, Linux et Mac,
 - conserver la simplicité et la stabilité du logiciel actuel,
@@ -20,15 +21,13 @@ Les sources sont fournies sous licence CECILL (compatible GNU GPL).
 
 - L'interface USB de la MiniCut2d est la version de base de l'interpolateur IPL5X disponible sur le site 5xproject.
 	
-Description des différents modules pour MiniCut2d Software (en essayant de prévoir l'évolution):
-
 ###Description des différents modules du logiciel
-1 - Communication avec l'interface de type IPL5X reconnue comme périphérique HID (actuellement ce travail est réalisé par IPL5XCom.dll sur la base d'un tableau de 65 octets dont la première case est toujours vide, code en C fourni à la demande)
+1. Communication avec l'interface de type IPL5X reconnue comme périphérique HID (actuellement ce travail est réalisé par IPL5XCom.dll sur la base d'un tableau de 65 octets dont la première case est toujours vide, code en C fourni à la demande)
 	* Identification du périphérique
 	* Envoi d'octets
 	* Réception d'octets
 	
-2 - Visionneuse de fichiers :
+2. Visionneuse de fichiers :
 	* Création d'une bibliothèque à l'installation du logiciel (=> ToDo : settings, choix de l'emplacement?).
 	* TreeView de représentation permettant de parcourir la bibliothèque.
 	* Fenêtre de visualisation du contenu du fichier.
@@ -37,7 +36,7 @@ Description des différents modules pour MiniCut2d Software (en essayant de pré
 	* Les profils issus de DXF sont nettoyés (suppression des points alignés ou trop proches), voir code et fonction Nettoyage.
 	* Opérations élémentairs sur le contenu affiché : affichage du premier point, miroir, changement de sens.
 
-3 - Création de projet :
+3. Création de projet :
 	* Fenêtre réprésentant la zone utile de la machine et le bloc.
 	* Saisie des dimensions du bloc.
 	* Intégration des séquences par drag and drop ou double-clic depuis la visionneuse.
@@ -57,13 +56,13 @@ Description des différents modules pour MiniCut2d Software (en essayant de pré
 	* Outils d'alignement (ToDo : réduire la place prise par ces outils : boutons déroulants?).
 	* ToDo : outils de modification des points d'une séquence : déplacement d'un point, ajout, suppression.
 
-4 - Gestion de fichiers :
+4. Gestion de fichiers :
 	* Sauvegarde en .mnc du projet, le .mnc a la structure d'un fichier .ini (voir code pour les sections et les clés).
 	* Export en .dxf du projet (actuellement réalisé par CNCTools.dll).
 	* Sauvegarde des répertoires utilisés dans "MiniCut2d Software.ini".
 	* Boutons (et menus?) "Nouveau Projet", "Ouvrir", "Enregister", "Enregistrer sous...".
 
-5 - Vectorisation :
+5. Vectorisation :
 	* Vectorisation d'images .jpg, .bmp ou .png intégrée au logiciel.
 	* Recadrage.
 	* Curseur de réglage du contraste.
@@ -71,16 +70,16 @@ Description des différents modules pour MiniCut2d Software (en essayant de pré
 	* Sauvegarde en .dxf dans la bibliothèque (mise à jour du TreeView).
 	* Transfert dans la visionneuse.
 
-6 - Représentation de la découpe :
+6. Représentation de la découpe :
 	* Représentation graphique (simplifiée) de la machine en fonction de ses caractéristiques réelles (voir code).
 	* Représentation du projet : bloc, séquences assemblées.
 	* Choix du type d'entrée, du type de sortie et représentation graphique (attention, si elles sont de même type, décaler la représentation graphique pour qu'on voie les deux).
 	* Zoom bloc (Todo : Zoom molette et déplacement de la vue).
 	* Simulation du déplacement du fil.
 
-7 - Choix du mode Normal - Expert
+7. Choix du mode Normal - Expert
 
-8 - Base de données matières :
+8. Base de données matières :
 	* Caractéristiques d'une matière : nom, chauffe, vitesse.
 	* Mémorisation dans "MiniCut2d Software.ini".
 	* Réglage chauffe.
@@ -90,18 +89,18 @@ Description des différents modules pour MiniCut2d Software (en essayant de pré
 	* Suppression matière.
 	* Mise à jour matière.
 
-9 - Boutons de déplacements automatiques (les interrupteurs forment deux boucles, une boucle pour les origines et une boucle pour les fin de course) :
+9. Boutons de déplacements automatiques (les interrupteurs forment deux boucles, une boucle pour les origines et une boucle pour les fin de course) :
 	* Retour à l'origine (voir code).
 	* Retour en position de repos.
 
-10 - Pilotage manuel du fil :
+10. Pilotage manuel du fil :
 	* Marche - arrêt et réglage dynamique de la chauffe (prévoir tempo pour la mise en température du fil).
 	* Information sur l'état en cours.
 	* Mouvements suivant 8 directions + marche - arrêt.
 	* Retour automatique suivant X, suivant Y.
 	* ToDo : déplacement d'une valeur saisie au clavier.
 
-11 - Lancement de la découpe :
+11. Lancement de la découpe :
 	* Choix du décalage (valeur fixe en mode Normal, plusieurs valeurs en mode Expert) : extérieur - sans - intérieur.
 	* Représentation graphique du décalage.
 	* Information sur l'état en cours.
@@ -109,14 +108,14 @@ Description des différents modules pour MiniCut2d Software (en essayant de pré
 	* Modification dynamique de la chauffe.
 	* Arrêt de la découpe.
 	
-12 - Reprise de la découpe après stop :
+12. Reprise de la découpe après stop :
 	* Choix entre annulation totale, retour origine, ou reprise de la découpe.
 	* Modification possible de la chauffe avant reprise.
 	* Choix du trajet de retour : horizontal, vertical, diagonal.
 	
-13 - Choix de la langue.
+13. Choix de la langue.
 
-14 - A propos.
+14. A propos.
 
 
 www.minicut2d.com - Renaud ILTIS
