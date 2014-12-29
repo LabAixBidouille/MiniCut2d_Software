@@ -181,6 +181,7 @@ Public Sub InitialiserControles()
       .lblAvertissementSequ.Visible = False
       .lblAvertissementDecoupe.Caption = ""
       .lblAvertissementDecoupe.Visible = False
+      
    End With
    With frmAboutAndSettings
       Set .frmAPropos.Font = PoliceNormal
@@ -270,6 +271,8 @@ Public Sub AffichageEnFonctionDuModeSoft(ModeSoft As String)
          .frameDecalage.Visible = False
          .frmDecalageExpert.Visible = True
          .cmdSettings.Picture = frmImages.imgSettingsExpert.Picture
+         .optGoManuel(0).Top = 1195
+         .optGoManuel(1).Top = 1195
       End With
    Case Else   'Normal
       With frmMiniCut2d
@@ -305,6 +308,8 @@ Public Sub AffichageEnFonctionDuModeSoft(ModeSoft As String)
          .frmDecalageExpert.Visible = False
          .frameDecalage.Visible = True
          .cmdSettings.Picture = frmImages.imgSettings.Picture
+         .optGoManuel(0).Top = 795
+         .optGoManuel(1).Top = 795
       End With
    End Select
 End Sub

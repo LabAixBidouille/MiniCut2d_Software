@@ -6,15 +6,15 @@ Begin VB.Form frmMiniCut2d
    Appearance      =   0  'Flat
    BackColor       =   &H80000005&
    Caption         =   "MiniCut2d Software"
-   ClientHeight    =   10110
+   ClientHeight    =   10095
    ClientLeft      =   120
    ClientTop       =   510
-   ClientWidth     =   15270
+   ClientWidth     =   15240
    Icon            =   "frmMiniCut2d.frx":0000
    LinkTopic       =   "Form1"
-   ScaleHeight     =   674
+   ScaleHeight     =   673
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   1018
+   ScaleWidth      =   1016
    StartUpPosition =   1  'CenterOwner
    Begin VB.PictureBox pctZoomInfo 
       Appearance      =   0  'Flat
@@ -45,12 +45,12 @@ Begin VB.Form frmMiniCut2d
    End
    Begin VB.PictureBox pctRepriseDecoupe 
       Height          =   9075
-      Left            =   10125
+      Left            =   10155
       ScaleHeight     =   9015
       ScaleWidth      =   3975
       TabIndex        =   83
       TabStop         =   0   'False
-      Top             =   390
+      Top             =   585
       Width           =   4035
       Begin VB.Frame frameAnnulationReprise 
          Caption         =   "Annuler"
@@ -318,12 +318,12 @@ Begin VB.Form frmMiniCut2d
    End
    Begin VB.PictureBox pctValidationDecoupe 
       Height          =   9075
-      Left            =   6000
+      Left            =   6990
       ScaleHeight     =   9015
       ScaleWidth      =   3975
       TabIndex        =   68
       TabStop         =   0   'False
-      Top             =   675
+      Top             =   1065
       Width           =   4035
       Begin VB.Frame frmDecalageExpert 
          Caption         =   "Décaler le fil (mode Expert)"
@@ -1431,13 +1431,13 @@ Begin VB.Form frmMiniCut2d
    Begin VB.PictureBox pctDecoupe 
       AutoRedraw      =   -1  'True
       Height          =   2955
-      Left            =   11445
+      Left            =   8505
       ScaleHeight     =   193
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   439
       TabIndex        =   12
       TabStop         =   0   'False
-      Top             =   195
+      Top             =   165
       Width           =   6645
       Begin VB.Timer TimerScreenSaver 
          Enabled         =   0   'False
@@ -3619,9 +3619,9 @@ Private Sub optHomeX_Click()
    flagAppuiStopSansMsgBox = False
    flagPositionPliage = False
    ReponseFonction = 1
-   ReponseFonction = RetourOrigine("Y", VitesseDecoupe) 'les erreurs sont traités dans DemandeHomeY, qui modifie PasParcourusXX
+   ReponseFonction = RetourOrigine("X", VitesseDecoupe) 'les erreurs sont traités dans DemandeHomeY, qui modifie PasParcourusXX
    If ReponseFonction = 1 Then   'on est à l'origine, on va à la position de repos du fil
-      Call MouvementUniquePas(0, -NbrPasToOriYG, 0, -NbrPasToOriYD, VitesseDecoupe, NBRt)
+      Call MouvementUniquePas(NbrPasToOriXG, 0, NbrPasToOriXD, 0, VitesseDecoupe, NBRt)
       If flagAppuiSTOP = True Then
          flagAppuiSTOP = False
          GoTo Arret_Stop
@@ -4054,10 +4054,10 @@ Private Sub Tree_NodeClick(ByVal Node As MSComctlLib.Node)
       Loop
       Erase t  'on libère la mémoire
       Erase BufferLignes
-      If NbSequ = 0 Then 'si le fichier n'est pas représentable et ne plante pas
-         pctSequ.AutoRedraw = True   'le tracé des séquences se fait sur le plan permanent
+      If NbSequ = 0 Then 'si le fichier ne contient pas de séquence, on efface juste l'écran de visu
+         pctSequ.AutoRedraw = True
          pctSequ.Cls
-      Else
+      Else 'le fichier est représentable et possède des séquences
          'Tous les tracés sont superposés lors d'un export Sketchup, il faut les répartir, on les aligne à droite de la première
          If NbSequ > 1 Then
             i = 1
@@ -4073,6 +4073,44 @@ Private Sub Tree_NodeClick(ByVal Node As MSComctlLib.Node)
                If i = NbSequ Then Exit Do
             Loop
          End If
+         'on renumérote les séquences fermées en partant du point en haut à gauche
+         For i = 1 To NbSequ
+            With Sequ(i)
+               If .NbPoints > 1 Then 'on doit conserver les points uniques
+                  If Abs(.Point(.NbPoints).x - .Point(1).x) < 0.001 And Abs(.Point(.NbPoints).y - .Point(1).y) < 0.001 Then
+                     'les points d'entrée et sortie sont considérés comme confondus si à moins de 0.001mm en X et Y
+                     'dans ce cas, on change le premier point : on prend celui qui est le plus à gauche
+                     Xgauche = .Point(1).x
+                     NumPtXGauche = 1
+                     For k = 1 To .NbPoints
+                        If .Point(k).x < Xgauche Then
+                           Xgauche = .Point(k).x
+                           NumPtXGauche = k
+                        End If
+                     Next k
+                     If NumPtXGauche = .NbPoints Then NumPtXGauche = 1 'on va enlever le dernier point
+                     .NbPoints = .NbPoints - 1  'on vire le dernier point
+                     ReDim Preserve .Point(1 To .NbPoints)
+                     'puis on renumérote
+                     ReDim Preserve .Point(1 To .NbPoints + NumPtXGauche - 1)
+                     For k = 1 To NumPtXGauche - 1
+                        .Point(.NbPoints + k).x = .Point(k).x
+                        .Point(.NbPoints + k).y = .Point(k).y
+                     Next k
+                     For k = 1 To .NbPoints
+                        .Point(k).x = .Point(k + NumPtXGauche - 1).x
+                        .Point(k).y = .Point(k + NumPtXGauche - 1).y
+                     Next k
+                     .NbPoints = .NbPoints + 1
+                     ReDim Preserve .Point(1 To .NbPoints)
+                     .Point(.NbPoints) = .Point(1)
+                     '***
+                  End If
+                  Call InverserSensSequ(Sequ(i))
+                  Call MaxiMiniSequ(Sequ(i))
+               End If
+            End With
+         Next i
       End If
    End Select
    
@@ -4413,9 +4451,6 @@ Private Sub cmdOuvrirFichierSequ_Click()
             End If
          End With
       Next i
-      CoeffBloc = 1 'reset car nouveau fichier
-      Call CalculAffichageInitial
-      Call TraceSequ
    Case "fc", "FC"  'ouverture d'un fichier RP-FC
       Call LireProfilsFC(NomFichier)
       'Dans RPFC, l'origine est à droite, on fait un miroir horizontal sans inverser le sens
@@ -4426,9 +4461,6 @@ Private Sub cmdOuvrirFichierSequ_Click()
             Next j
          End With
       Next i
-      CoeffBloc = 1 'reset car nouveau fichier
-      Call CalculAffichageInitial
-      Call TraceSequ
    Case "cpx", "CPX"  'ouverture d'un fichier Complexes
       Call LireCPX(NomFichier)
       'Dans Complexes, l'origine est à droite, on fait un miroir horizontal sans inverser le sens
@@ -4439,9 +4471,6 @@ Private Sub cmdOuvrirFichierSequ_Click()
             Next j
          End With
       Next i
-      CoeffBloc = 1 'reset car nouveau fichier
-      Call CalculAffichageInitial
-      Call TraceSequ
    Case "txt", "TXT"
       'les fichiers .txt (texte) acceptés sont des fichiers texte du type :
       '
@@ -4502,7 +4531,7 @@ Private Sub cmdOuvrirFichierSequ_Click()
       Loop
       Erase t  'on libère la mémoire
       Erase BufferLignes
-      If NbSequ = 0 Then 'si le fichier n'est pas représentable et ne plante pas
+      If NbSequ = 0 Then 'si le fichier ne contient pas de séquence, on efface juste l'écran de visu
          pctSequ.AutoRedraw = True   'le tracé des séquences se fait sur le plan permanent
          pctSequ.Cls
       Else
@@ -4521,15 +4550,93 @@ Private Sub cmdOuvrirFichierSequ_Click()
                If i = NbSequ Then Exit Do
             Loop
          End If
+         'on renumérote les séquences fermées en partant du point en haut à gauche
+         For i = 1 To NbSequ
+            With Sequ(i)
+               If .NbPoints > 1 Then 'on doit conserver les points uniques
+                  If Abs(.Point(.NbPoints).x - .Point(1).x) < 0.001 And Abs(.Point(.NbPoints).y - .Point(1).y) < 0.001 Then
+                     'les points d'entrée et sortie sont considérés comme confondus si à moins de 0.001mm en X et Y
+                     'dans ce cas, on change le premier point : on prend celui qui est le plus à gauche
+                     Xgauche = .Point(1).x
+                     NumPtXGauche = 1
+                     For k = 1 To .NbPoints
+                        If .Point(k).x < Xgauche Then
+                           Xgauche = .Point(k).x
+                           NumPtXGauche = k
+                        End If
+                     Next k
+                     If NumPtXGauche = .NbPoints Then NumPtXGauche = 1 'on va enlever le dernier point
+                     .NbPoints = .NbPoints - 1  'on vire le dernier point
+                     ReDim Preserve .Point(1 To .NbPoints)
+                     'puis on renumérote
+                     ReDim Preserve .Point(1 To .NbPoints + NumPtXGauche - 1)
+                     For k = 1 To NumPtXGauche - 1
+                        .Point(.NbPoints + k).x = .Point(k).x
+                        .Point(.NbPoints + k).y = .Point(k).y
+                     Next k
+                     For k = 1 To .NbPoints
+                        .Point(k).x = .Point(k + NumPtXGauche - 1).x
+                        .Point(k).y = .Point(k + NumPtXGauche - 1).y
+                     Next k
+                     .NbPoints = .NbPoints + 1
+                     ReDim Preserve .Point(1 To .NbPoints)
+                     .Point(.NbPoints) = .Point(1)
+                     '***
+                  End If
+                  Call InverserSensSequ(Sequ(i))
+                  Call MaxiMiniSequ(Sequ(i))
+               End If
+            End With
+         Next i
       End If
-      CoeffBloc = 1 'reset car nouveau fichier
-      Call CalculAffichageInitial
-      Call TraceSequ
    Case Else
       'on n'est pas sensé arriver ici, mais c'est une précaution
       MsgBox Message(Corps, 12), vbCritical, Message(Titre, 12)  'extension non valide
       Exit Sub
    End Select
+   '****************NETTOYAGE
+   For j = 1 To NbSequ
+      Call MaxiMiniSequ(Sequ(j))
+      With Sequ(j)
+         ReDim profil(0 To .NbPoints - 1)
+         For i = 1 To .NbPoints
+            profil(i - 1).x = .Point(i).x
+            profil(i - 1).y = .Point(i).y
+         Next i
+         If .DeltaX >= .DeltaY Then
+            EpsilonNettoyage = .DeltaX / CoeffNett     'CoeffNett défini dans le Form Load
+         Else
+            EpsilonNettoyage = .DeltaY / CoeffNett
+         End If
+         NbPoints = Nettoyage(EpsilonNettoyage)     'nettoyage des points trop rapprochés
+         .NbPoints = NbPoints
+         ReDim .Point(1 To .NbPoints)               'tableau du profil initial, inclus dans le type "Trajet"
+         ReDim SequTrace(j).Point(1 To .NbPoints)
+         For i = 1 To .NbPoints                      'Transfert des points dans mon type de tableau
+            .Point(i).x = profil(i - 1).x
+            .Point(i).y = profil(i - 1).y
+         Next i
+      End With
+      Call MaxiMiniSequ(Sequ(j))
+   Next j
+   'Suppression des points doubles (si point simple dans le dxf, CNCTools envoie deux points avec PU et PD, cf. type)
+   For j = 1 To NbSequ
+      With Sequ(j)
+         If .NbPoints = 2 Then
+            If .Point(1).x = .Point(2).x And .Point(1).y = .Point(2).y Then
+               ReDim Preserve .Point(1 To 1) 'on vire le doublon
+               .NbPoints = 1
+            End If
+         End If
+      End With
+   Next j
+   Erase profil  'libérer la mémoire
+   '****************
+   NumSequSel = 0 'initialisation pour mouse_move
+   NbSequSel = 0
+   CoeffBloc = 1 'reset car nouveau fichier
+   Call CalculAffichageInitial
+   Call TraceSequ
    'on mémorise le dernier dossier utilisé dans MiniCut2d_Software.ini
    RepertoireOuvert = GetPathName(NomFichier)
    EcritFichierIni "Fichiers", "DernierRepertoire", RepertoireOuvert
@@ -8079,10 +8186,10 @@ Private Function RetourOrigine(Axe As String, VitesseMaxDemandee As Single) As I
       Petit_MouvementPasYD = Round((0.1) * PasParTourYD / MmParTourYD, 0)      'on sort des inters par segments de 0.1mm
    End Select
    Select Case Axe  'on annule le mouvement sur un des axes
-   Case "Y"  'home sur Y
+   Case "Y"  'home sur Y, on annule les valeurs sur X
       PasXG = 0
       PasXD = 0
-   Case "X"  'home sur X
+   Case "X"  'home sur X, on annule les valeurs sur Y
       PasYG = 0
       PasYD = 0
    Case Else
@@ -9160,6 +9267,7 @@ Private Function Decoupe() As Integer
          If (ByteIPL(12) And &H2) = &H2 Then   'la tentative d'envoi de la salve renvoie step activity stopped = on est à l'arrêt
             Exit Function
          End If
+                 
          SegmentCourant = ConcatOctets(ByteIPL(4), ByteIPL(5), ByteIPL(6))
          If SegmentCourant = 1 Then
             lblAvertissementDecoupe.Caption = Label(28) ' "Mise en température du fil"  'le premier segment est celui de la tempo de chauffe
@@ -9225,7 +9333,7 @@ Private Function Decoupe() As Integer
          SegmentCourant = ConcatOctets(ByteIPL(4), ByteIPL(5), ByteIPL(6))
          Exit Function
       End If
-         
+      
       'si le stop n'a pas été demandé, on actualise la position du fil
       SegmentCourant = ConcatOctets(ByteIPL(4), ByteIPL(5), ByteIPL(6))
       If SegmentCourant = 1 Then

@@ -423,7 +423,7 @@ Public Function SalveAttenteChauffe(ByVal Duree As Integer, ByVal ChauffeFil As 
       .NBRM = MPart(NbrePulsesAttente)
       .NBRH = HPart(NbrePulsesAttente)
       .NBRU = UPart(NbrePulsesAttente)
-      .F_ACC = Round(ChauffeFil * 2.55, 0)  'le mouvement n'est pas accéléré
+      .F_ACC = Round(ChauffeFil * ChauffeMaxi / 100 * 2.55, 0) '=.PWM ; le byte 26 correspond à .PWM quand le mouvement n'est pas accéléré
    End With
 End Function
 
