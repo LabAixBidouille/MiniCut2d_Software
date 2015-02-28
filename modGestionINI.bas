@@ -177,21 +177,32 @@ Public Sub ListerMatieresDuIni()
       
    buffer = ReadFileToBuffer(App.Path & "\MiniCut2d_Software.ini", errCode, errString) 'on récupère le texte du .ini
    t() = Split(buffer, vbCrLf)   'on le coupe en lignes qu'on met dans un tableau
-   j = 0
-   ReDim MatieresDeLaBase(0)
+   ReDim MatieresDeLaBase(0 To 0) 'l'indice 0 est réservé aux réglages par défaut
+   j = 1
    For i = 0 To UBound(t()) - 1  'on parcoure le tableau du .ini et on recopie le nom des tables
       If Left$(t(i), 9) = "[Matiere_" Then
-         ReDim Preserve MatieresDeLaBase(0 To j)
-         MatieresDeLaBase(j).Nom = Mid$(t(i), 10, Len(t(i)) - 10)
-         MatieresDeLaBase(j).Chauffe = LitFichierIni((Mid$(t(i), 2, Len(t(i)) - 2)), "ChauffeDecoupe")
-         'ajout de la vitesse pour le mode Expert, il faut rajouter la vitesse dans les anciens .ini
-         MatieresDeLaBase(j).Vitesse = V2P(LitFichierIni("Matiere_" & MatieresDeLaBase(j).Nom, "VitesseDecoupe"))  'on change les virgules en point
-         If MatieresDeLaBase(j).Vitesse = "" Then 'c'est qu'on est sur un ancien .ini
-            MatieresDeLaBase(j).Vitesse = "4.0" 'c'est une variable string
-            EcritFichierIni "Matiere_" & MatieresDeLaBase(j).Nom, "VitesseDecoupe", MatieresDeLaBase(j).Vitesse
+         NomTemp = Mid$(t(i), 10, Len(t(i)) - 10)
+         If NomTemp = "Reglage par defaut" Then
+            MatieresDeLaBase(0).Nom = NomTemp
+            MatieresDeLaBase(0).Chauffe = LitFichierIni((Mid$(t(i), 2, Len(t(i)) - 2)), "ChauffeDecoupe")
+            'ajout de la vitesse pour le mode Expert, il faut rajouter la vitesse dans les anciens .ini
+            MatieresDeLaBase(0).Vitesse = V2P(LitFichierIni("Matiere_" & MatieresDeLaBase(0).Nom, "VitesseDecoupe"))  'on change les virgules en point
+            If MatieresDeLaBase(0).Vitesse = "" Then 'c'est qu'on est sur un ancien .ini
+               MatieresDeLaBase(0).Vitesse = "4.0" 'c'est une variable string
+               EcritFichierIni "Matiere_" & MatieresDeLaBase(0).Nom, "VitesseDecoupe", MatieresDeLaBase(0).Vitesse
+            End If
+         Else
+            ReDim Preserve MatieresDeLaBase(0 To j)
+            MatieresDeLaBase(j).Nom = NomTemp
+            MatieresDeLaBase(j).Chauffe = LitFichierIni((Mid$(t(i), 2, Len(t(i)) - 2)), "ChauffeDecoupe")
+            'ajout de la vitesse pour le mode Expert, il faut rajouter la vitesse dans les anciens .ini
+            MatieresDeLaBase(j).Vitesse = V2P(LitFichierIni("Matiere_" & MatieresDeLaBase(j).Nom, "VitesseDecoupe"))  'on change les virgules en point
+            If MatieresDeLaBase(j).Vitesse = "" Then 'c'est qu'on est sur un ancien .ini
+               MatieresDeLaBase(j).Vitesse = "4.0" 'c'est une variable string
+               EcritFichierIni "Matiere_" & MatieresDeLaBase(j).Nom, "VitesseDecoupe", MatieresDeLaBase(j).Vitesse
+            End If
+            j = j + 1
          End If
-         MatieresDeLaBase(j).IndexInitial = j
-         j = j + 1
       End If
    Next i
    j = 0

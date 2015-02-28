@@ -1552,7 +1552,7 @@ Begin VB.Form frmMiniCut2d
             NumListImages   =   4
             BeginProperty ListImage1 {2C247F27-8591-11D1-B16A-00C0F0283628} 
                Picture         =   "frmMiniCut2d.frx":1F8FC
-               Key             =   "Bibliothèque"
+               Key             =   "Bibliotheque"
             EndProperty
             BeginProperty ListImage2 {2C247F27-8591-11D1-B16A-00C0F0283628} 
                Picture         =   "frmMiniCut2d.frx":1FF6A
@@ -1560,7 +1560,7 @@ Begin VB.Form frmMiniCut2d
             EndProperty
             BeginProperty ListImage3 {2C247F27-8591-11D1-B16A-00C0F0283628} 
                Picture         =   "frmMiniCut2d.frx":205D8
-               Key             =   "Découpe"
+               Key             =   "Decoupe"
             EndProperty
             BeginProperty ListImage4 {2C247F27-8591-11D1-B16A-00C0F0283628} 
                Picture         =   "frmMiniCut2d.frx":20C46
@@ -3031,10 +3031,6 @@ Attribute VB_Exposed = False
 
 Option Explicit
 
-Private Sub cmdImporterImage_Click()
-   frmImpConv.Show vbModal
-End Sub
-
 '********* INITIALISATION de la FENETRE ***********
 Private Sub Form_Load()
    Dim i As Long, j As Long
@@ -3051,16 +3047,29 @@ Private Sub Form_Load()
       'L'écriture d'une clé engendre automatiquement le fichier s'il n'existe pas
       'Les matières :
       'La section [BDDMatières] comprend le nombre de matières et le nom de celle qui doit être affichée dans la combobox
-      EcritFichierIni "BDDMatieres", "MatiereUtilisee", "Réglage par défaut"  'c'est la dernière matière utilisée et chargée à l'ouverture
+      EcritFichierIni "BDDMatieres", "MatiereUtilisee", "Reglage par defaut"  'c'est la dernière matière utilisée et chargée à l'ouverture
       'Chaque matière fait ensuite l'objet d'une section avec la valeur de chauffe en clé
-      EcritFichierIni "Matiere_" & "Réglage par défaut", "ChauffeDecoupe", 60
-      EcritFichierIni "Matiere_" & "Réglage par défaut", "VitesseDecoupe", "4.0"
+      EcritFichierIni "Matiere_" & "Reglage par defaut", "ChauffeDecoupe", 65
+      EcritFichierIni "Matiere_" & "Reglage par defaut", "VitesseDecoupe", "4.0"
       'On définit égelement le dossier de sauvegarde des projets par défaut
-      EcritFichierIni "Fichiers", "DernierRepertoire", App.Path & "\Bibliothèque\Mes Découpes\"
+      EcritFichierIni "Fichiers", "DernierRepertoire", App.Path & "\Bibliotheque\Mes Decoupes\"
       strLangue = "francais"
       EcritFichierIni "Parametres", "Langue", strLangue  'au premier lancement du soft, la langue est le français
       ModeSoft = "Normal"
       EcritFichierIni "Logiciel", "Mode", ModeSoft 'au premier lancement du soft, pas de mode expert
+   Else  'le fichier .ini existe, on vérifie qu'il est conforme
+      'Pour internationnalisation, on supprime les accents de "Matière_" & "Réglage par défaut"
+      If LitFichierIni("Matiere_" & "Réglage par défaut", "ChauffeDecoupe", "") <> "" Then  'si ça renvoie une clé valide, la section existe
+         'On efface l'ancienne section
+         lngReturnCode = WritePrivateProfileString("Matiere_" & "Réglage par défaut", 0&, 0&, App.Path & "\MiniCut2d_Software.ini")
+         'Et on réécrit la nouvelle
+         EcritFichierIni "Matiere_" & "Reglage par defaut", "ChauffeDecoupe", 65
+         EcritFichierIni "Matiere_" & "Reglage par defaut", "VitesseDecoupe", "4.0"
+      End If
+      'on peut encore avoir un accent dans "MatiereUtilisee", on le supprime
+      If LitFichierIni("BDDMatieres" & "MatiereUtilisee", "") = "Réglage par défaut" Then  'si ça renvoie une clé valide, la section existe
+         EcritFichierIni "BDDMatieres", "MatiereUtilisee", "Reglage par defaut"
+      End If
    End If
 
    'prise en compte du mode du logiciel
@@ -3107,7 +3116,6 @@ Private Sub Form_Load()
    Case "espanol"
       frmLangue.optLangue(4).Value = True
    End Select
-   
    '******** Affichage du Splash Screen *********
    ' Création du .ini s'il est absent, choix de la machine
    frmSplashScreen.Show vbModal, Me
@@ -3126,17 +3134,27 @@ Private Sub Form_Load()
    'Initialisation de la variable pour effacement de fichiers
    CheminFichier = ""
    
-   'Vérifier l'existence du dossier "Bibliothèque" et le créer si besoin
-   If VerifierExistenceRepertoire(App.Path & "\Bibliothèque") = False Then
+   'Suppression des accents pour fonctionnement international : on teste si "Bibliothèque" existe et on le remplace par "Bibliotheque"
+   If VerifierExistenceRepertoire(App.Path & "\Bibliothèque") = True Then
+      Name App.Path & "\Bibliothèque" As App.Path & "\Bibliotheque"
+   End If
+   
+   'Vérifier l'existence du dossier "Bibliotheque" et le créer si besoin
+   If VerifierExistenceRepertoire(App.Path & "\Bibliotheque") = False Then
       MsgBox Message(Corps, 2), vbInformation, Message(Titre, 2) 'répértoire Bibliothèque absent, il sera créé
-      MkDir (App.Path & "\Bibliothèque")
-      MkDir (App.Path & "\Bibliothèque\Mes Découpes")
+      MkDir (App.Path & "\Bibliotheque")
+      MkDir (App.Path & "\Bibliotheque\Mes Decoupes")
    End If
-   'Si "Bibliothèque" existe, il faut tester "Mes Découpes"
-   If VerifierExistenceRepertoire(App.Path & "\Bibliothèque\Mes Découpes") = False Then
-      MkDir (App.Path & "\Bibliothèque\Mes Découpes")
+   'Si "Bibliothèque" existe, il faut tester "Mes Decoupes"
+   If VerifierExistenceRepertoire(App.Path & "\Bibliotheque\Mes Decoupes") = False Then
+      MkDir (App.Path & "\Bibliotheque\Mes Decoupes")
    End If
-    
+   'ON vérifie que le Dernier Répertoire mémorisé existe (si le chemin contient des accents, il n'existe plus puisqu'on a viré les accents
+   ' et ça plantera à la lecture)
+   If VerifierExistenceRepertoire(LitFichierIni("Fichiers", "DernierRepertoire")) = False Then
+      EcritFichierIni "Fichiers", "DernierRepertoire", App.Path & "\Bibliotheque\Mes Decoupes\"
+   End If
+   
    'On efface l'ancienne section "Table" qui deviendra "Machine" (qui aura plus de sens pour le newbie et en anglais)
    lngReturnCode = WritePrivateProfileString("Table", 0&, 0&, App.Path & "\MiniCut2d_Software.ini")
    
@@ -3149,7 +3167,6 @@ Private Sub Form_Load()
    Call ParametresMachine
    
    Call GestionLangue(strLangue)  'pour le About, et tout ce qui tient compte de TypeMachine
-
    'Création des tableaux du dessin de la table de l'onglet découpe et calcul des extremums
    'on a besoin des courses pour les dessins, elles sont définies ci-dessus
    Call TableauTraceMachine  'remplissage des tableaux de définition du dessin de la table (module modDessinTable)
@@ -3213,11 +3230,13 @@ Private Sub Form_Load()
    
    'Matières :
    'contrôle que la matière par défaut n'a pas une vitesse modifiée et on corrige si besoin
-   stringTemp = LitFichierIni("Matiere_" & "Réglage par défaut", "VitesseDecoupe", "")
+   stringTemp = LitFichierIni("Matiere_" & "Reglage par defaut", "VitesseDecoupe", "")
    If stringTemp <> "4.0" Then
-      EcritFichierIni "Matiere_" & "Réglage par défaut", "VitesseDecoupe", "4.0"
+      EcritFichierIni "Matiere_" & "Reglage par defaut", "VitesseDecoupe", "4.0"
    End If
+   
    Call ListerMatieresDuIni
+   
    MatiereUtilisee.Nom = LitFichierIni("BDDMatieres", "MatiereUtilisee")
        
    'Réglage des scrollbar sur la valeur de la matière utilisée ; si elle est trop élevée, on la bride au maxi
@@ -3285,7 +3304,7 @@ Private Sub Form_Load()
    MargInit = 8  'pour affichage total des bords du dessin
    
    'Création du treeview des dossiers et fichiers
-   ChemRepRacine = App.Path & "\Bibliothèque"
+   ChemRepRacine = App.Path & "\Bibliotheque"
    Call CreerTreeView
    
    Call EchelleTransf(0, CourseX, 0, CourseY)    'Définition du repère de représentation de la fenêtre du bas
@@ -3346,7 +3365,7 @@ Public Sub CreerTreeView()
    Tree.ImageList = ImageList1
    Tree.Nodes.Clear
    'Création de la racine, avec le chemin du dossier en clé
-   Set NoeudX = Tree.Nodes.Add(, , ChemRepRacine, "Bibliothèque", "Bibliothèque")
+   Set NoeudX = Tree.Nodes.Add(, , ChemRepRacine, "Bibliotheque", "Bibliotheque")
    Set fso = New FileSystemObject
    Set dossier = fso.GetFolder(ChemRepRacine)
    Scan dossier  'remplissage du treeview
@@ -3372,7 +3391,7 @@ Public Sub Scan(ByVal dossier As Folder)
    For Each fichier In dossier.Files   'liste des fichiers
       Select Case ExtraitExtensionFichier(fichier)
       Case "DAT", "dat", "DXF", "dxf", "plt", "PLT", "eps", "EPS", "mnc", "MNC", "cpx", "CPX", "fc", "FC", "txt", "TXT" 'on affiche seulement les fichiers connus
-         Set NoeudX = Tree.Nodes.Add(CStr(dossier), tvwChild, CStr(fichier), ExtraitNomFichier(fichier), "Découpe")
+         Set NoeudX = Tree.Nodes.Add(CStr(dossier), tvwChild, CStr(fichier), ExtraitNomFichier(fichier), "Decoupe")
       End Select
    Next
 End Sub
@@ -3633,7 +3652,7 @@ Private Sub optHomeX_Click()
       If (ByteIPL(12) And &H40) = &H40 Then GoTo Arret_Stop  'arrêt par bouton ou ordre STOP, on annule
       If (ByteIPL(12) And &H10) = &H10 Then GoTo Arret_Origine 'arrêt par ouverture des switch d'origine
       If (ByteIPL(12) And &H20) = &H20 Then GoTo Arret_FDC  'arrêt par ouverture des FDC
-      lblAvertissementFil2.Caption = Label(35)  ' "Origine verticale atteinte"
+      lblAvertissementFil2.Caption = Label(38)  ' "Origine horizontale atteinte"
    End If
    optHomeY.Enabled = True
    optAnnulerHome.Value = True
@@ -7865,14 +7884,14 @@ Private Sub cmdGestionMatiere_Click(Index As Integer)
          'les opérations sur comboMatieres vont automatiquement lancer comboMatieres_click() qui va actualiser les valeurs des curseurs
       End If
    Case 1   'remplacement de la chauffe dans la matière courante
-      If MatiereUtilisee.Nom = "Réglage par défaut" And VitesseDecoupe <> 4 Then  'si on est sur la matière par défaut, il ne faut pas changer la vitesse
+      If MatiereUtilisee.Nom = "Reglage par defaut" And VitesseDecoupe <> 4 Then  'si on est sur la matière par défaut, il ne faut pas changer la vitesse
          MsgBox Message(Corps, 59), vbOKOnly, Message(Titre, 59) 'ligne ne peut pas être modifiée
          Exit Sub
       End If
       Call SauverMatiere(MatiereUtilisee.Nom, ChauffeCourante, VitesseDecoupe) 'en .ini
       Call ListerMatieresDuIni  'lit le .ini et remplit la combobox
    Case 2   'suppression de la matière courante
-      If MatiereUtilisee.Nom = "Réglage par défaut" Then
+      If MatiereUtilisee.Nom = "Reglage par defaut" Then
          MsgBox Message(Corps, 19), vbOKOnly, Message(Titre, 19) 'ligne ne peut pas être effacée
          Exit Sub
       Else
@@ -9354,7 +9373,7 @@ Private Function Decoupe() As Integer
          End If
 
          progrbarChauffe.Visible = False
-         lblAvertissementDecoupe.Caption = "Découpe segment n°" & Str(SegmentCourant - 1) & "/" & Str(NumSalveDataEnd - 1)
+         lblAvertissementDecoupe.Caption = Label(29) & Str(SegmentCourant - 1) & "/" & Str(NumSalveDataEnd - 1)
          NBRc = ConcatOctets(ByteIPL(13), ByteIPL(14), ByteIPL(15), ByteIPL(16))
          With SalveDecoupe(SegmentCourant - 1)
             NBRt = ConcatOctets(.NBRL, .NBRM, .NBRH, .NBRU)
@@ -9821,7 +9840,7 @@ Private Sub cmdImporterProfil_Click()
   'must be correctly formatted depending
   'on whether the path is a drive, a
   'folder, or "".
-  spath = FixPath(App.Path & "\Bibliothèque")
+  spath = FixPath(App.Path & "\Bibliotheque")
   'call the function, returning the path
   'selected (or "" if cancelled)
    strFolderName = BrowseForFolderByPath(spath)  'affiche le browser de dossiers et récupère le chemin du rep sélectionné
@@ -10012,6 +10031,13 @@ Private Function UnqualifyPath(spath As String) As String
    UnqualifyPath = spath
 End Function
 
+'****** ouverture de la fenêtre de vectorisation *****
+Private Sub cmdImporterImage_Click()
+   Call GestionLangue(strLangue) 'on modifie la langue, ce qui va charger automatiquement la feuille
+   frmImpConv.Show vbModal
+End Sub
+
+'****** ouverture de la fenêtre de choix de la langue ******
 Private Sub cmdLangue_Click()
    frmLangue.Show vbModal
 End Sub

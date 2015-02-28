@@ -71,6 +71,24 @@ Public Sub LangueEspanol(LangueAUtiliser As String)
    With frmParametres
       .Caption = "Parámetros de la máquina"
    End With
+   '**** traduction de la form de vectorisation ****
+   With frmImpConv
+      .frmImporterImage.Caption = "Imagen"
+      .frmRecadrer.Caption = "Encuadrar"
+      .frmApercu.Caption = "Negro y Blanco"
+      .frmLisserTransferer.Caption = "Vectorizar"
+      .cmdImporterImage(0).ToolTipText = "Importar..."
+      .cmdImporterImage(1).ToolTipText = "Pegar"
+      .cmdRecadrerLaSelection.ToolTipText = "Encuadrar"
+      .optApercu(0).ToolTipText = "Convertir en negro y blanco"
+      .optApercu(1).ToolTipText = "Anular"
+      .optInterieur(0).ToolTipText = "Suprimir los trazados interiores"
+      .optInterieur(1).ToolTipText = "Conservar los trazados interiores "
+      .cmdContoursLissageTransfert.ToolTipText = "Vectorizar"
+      .chkVoirPointsVecto.ToolTipText = "Visualización de los puntos"
+      .cmdSauverVecto.ToolTipText = "Salvaguardar en .DXF"
+      .cmdQuitterImpConv.ToolTipText = "Validar"
+   End With
    '**** traduction de la form principale ****
    With frmMiniCut2d
       .cmdLangue.Picture = frmImages.imgDrapeauEspagnol.Picture   'le drapeau
@@ -532,5 +550,22 @@ Public Sub LangueEspanol(LangueAUtiliser As String)
    ReDim Preserve Label(1 To 32)
    Label(32) = "Duración :"
    '
-
+   ReDim Preserve Label(1 To 33)
+   Label(33) = "Retorno automático vertical"
+   '
+   ReDim Preserve Label(1 To 34)
+   Label(34) = "Retorno automático horizontal"
+   '
+   ReDim Preserve Label(1 To 35)
+   Label(35) = "Origen vertical alcanzado"
+   '
+   ReDim Preserve Label(1 To 36)
+   Label(36) = "Imagen color o nivel de grises"
+   '
+   ReDim Preserve Label(1 To 38)
+   Label(37) = "Imagen negro y blanco"
+   '
+   ReDim Preserve Label(1 To 38)
+   Label(38) = "Origen horizontal alcanzado"
+   '
 End Sub

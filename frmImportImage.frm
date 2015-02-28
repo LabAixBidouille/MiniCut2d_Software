@@ -510,14 +510,6 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Private Sub Form_Load()
-   Set frmImporterImage.Font = PoliceNormal
-   Set frmApercu.Font = PoliceNormal
-   Set frmRecadrer.Font = PoliceNormal
-   Set frmRecadrer.Font = PoliceNormal
-   Set frmLisserTransferer.Font = PoliceNormal
-   Set cmdQuitterImpConv.Font = PoliceNormal
-   Set lblSensibilite.Font = PoliceGras
-   Set lblLissageVecto.Font = PoliceGras
 
    Me.KeyPreview = True  'pour intercepter Ctrl+v
    
@@ -745,7 +737,7 @@ Private Sub TransferOriginaleDansRedim()
    pctNoirBlancRedim.Height = pctCouleurRedim.Height
    pctCouleurRedim.ZOrder
    pctCouleurRedim.Visible = True
-   lblCouleur.Caption = "Image couleur ou niveaux de gris"
+   lblCouleur.Caption = Label(36) 'image couleur ou niveaux de gris
    DoEvents 'pour déclencher éventuellement le mousedown/up sur la picturebox en-dessous
    blnImageTracee = True
 End Sub
@@ -900,7 +892,7 @@ Private Sub optApercu_Click(Index As Integer)
       pctNoirBlancRedim.Width = LargeurPictDestination  ' à calculer le noir et blanc sur l'image totale
       pctNoirBlancRedim.Height = HauteurPictDestination
       Call MatriceVersNoirBlanc(True, pctNoirBlancRedim) 'true = pas de matrice binaire, uniquement de la visu
-      lblCouleur.Caption = "Image noir et blanc"
+      lblCouleur.Caption = Label(37) 'image en noir et blanc
       pctNoirBlancRedim.Visible = True
       pctCouleurRedim.Visible = False
       

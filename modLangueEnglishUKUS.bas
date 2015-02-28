@@ -71,6 +71,24 @@ Public Sub LangueEnglishUKUS(LangueAUtiliser As String)
    With frmParametres
       .Caption = "Machine parameters"
    End With
+   '**** traduction de la form de vectorisation ****
+   With frmImpConv
+      .frmImporterImage.Caption = "Picture"
+      .frmRecadrer.Caption = "Crop"
+      .frmApercu.Caption = "Black and White"
+      .frmLisserTransferer.Caption = "Vectorize"
+      .cmdImporterImage(0).ToolTipText = "Import..."
+      .cmdImporterImage(1).ToolTipText = "Paste"
+      .cmdRecadrerLaSelection.ToolTipText = "Crop"
+      .optApercu(0).ToolTipText = "Convert in black and white"
+      .optApercu(1).ToolTipText = "Cancel"
+      .optInterieur(0).ToolTipText = "Delete interior lines"
+      .optInterieur(1).ToolTipText = "Keep interior lines"
+      .cmdContoursLissageTransfert.ToolTipText = "Vectorize"
+      .chkVoirPointsVecto.ToolTipText = "Showing points"
+      .cmdSauverVecto.ToolTipText = "Save in .DXF"
+      .cmdQuitterImpConv.ToolTipText = "Validate"
+   End With
    '**** traduction de la form principale ****
    With frmMiniCut2d
       If LangueAUtiliser = "USA" Then
@@ -540,6 +558,24 @@ Public Sub LangueEnglishUKUS(LangueAUtiliser As String)
    '
    ReDim Preserve Label(1 To 32)
    Label(32) = "Duration :"
+   '
+   ReDim Preserve Label(1 To 33)
+   Label(33) = "Vertical return auto"
+   '
+   ReDim Preserve Label(1 To 34)
+   Label(34) = "Horizontal return auto"
+   '
+   ReDim Preserve Label(1 To 35)
+   Label(35) = "Vertical origin reached"
+   '
+   ReDim Preserve Label(1 To 36)
+   Label(36) = "Picture in colors or greyscale"
+   '
+   ReDim Preserve Label(1 To 38)
+   Label(37) = "Picture in black and white"
+   '
+   ReDim Preserve Label(1 To 38)
+   Label(38) = "Horizontal origin reached"
    '
 
 End Sub

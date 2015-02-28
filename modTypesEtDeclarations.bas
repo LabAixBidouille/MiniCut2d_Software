@@ -239,7 +239,6 @@ Public Type Matiere
    Nom As String
    Chauffe As Single
    Vitesse As String
-   IndexInitial As Integer 'numéro dans le tableau initial
 End Type
 
 Public Type UndoRedo

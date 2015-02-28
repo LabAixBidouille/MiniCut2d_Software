@@ -72,6 +72,24 @@ Public Sub LangueDeutsch(LangueAUtiliser As String)
    With frmParametres
       .Caption = "Maschinenparameter"
    End With
+   '**** traduction de la form de vectorisation ****
+   With frmImpConv
+      .frmImporterImage.Caption = "Bild"
+      .frmRecadrer.Caption = "Beschneiden"
+      .frmApercu.Caption = "Schwartz/Weiss"
+      .frmLisserTransferer.Caption = "Vektorisieren"
+      .cmdImporterImage(0).ToolTipText = "Importieren..."
+      .cmdImporterImage(1).ToolTipText = "Kleben"
+      .cmdRecadrerLaSelection.ToolTipText = "Beschneiden"
+      .optApercu(0).ToolTipText = "Schwartz/Weiss convertieren"
+      .optApercu(1).ToolTipText = "Annullieren"
+      .optInterieur(0).ToolTipText = "Innere Trassen entfernen"
+      .optInterieur(1).ToolTipText = "Innere Trassen bewahren"
+      .cmdContoursLissageTransfert.ToolTipText = "Vektorisieren"
+      .chkVoirPointsVecto.ToolTipText = "Punkte anzeigen"
+      .cmdSauverVecto.ToolTipText = "In .DXF format speichern"
+      .cmdQuitterImpConv.ToolTipText = "Validieren"
+   End With
    '**** traduction de la form principale ****
    With frmMiniCut2d
       .cmdLangue.Picture = frmImages.imgDrapeauAllemand.Picture   'le drapeau
@@ -530,6 +548,24 @@ End With
    '
    ReDim Preserve Label(1 To 32)
    Label(32) = "Dauer :"
+   '
+   ReDim Preserve Label(1 To 33)
+   Label(33) = "Automatisch vertikal Rückwerts"
+   '
+   ReDim Preserve Label(1 To 34)
+   Label(34) = "Automatisch horizontal Rückwerts"
+   '
+   ReDim Preserve Label(1 To 35)
+   Label(35) = "Vertikal Ursprung erreicht"
+   '
+   ReDim Preserve Label(1 To 36)
+   Label(36) = "Bild in Farbe oder Graustufen"
+   '
+   ReDim Preserve Label(1 To 38)
+   Label(37) = "Schwartz/Weiss Bild"
+   '
+   ReDim Preserve Label(1 To 38)
+   Label(38) = "Horizontal Ursprung erreicht"
    '
 
 End Sub

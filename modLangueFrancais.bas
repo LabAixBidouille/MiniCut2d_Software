@@ -71,6 +71,24 @@ Public Sub LangueFrancais(LangueAUtiliser As String)
    With frmParametres
       .Caption = "Paramètres de la machine"
    End With
+   '**** traduction de la form de vectorisation ****
+   With frmImpConv
+      .frmImporterImage.Caption = "Image"
+      .frmRecadrer.Caption = "Recadrer"
+      .frmApercu.Caption = "Noir et Blanc"
+      .frmLisserTransferer.Caption = "Vectoriser"
+      .cmdImporterImage(0).ToolTipText = "Importer..."
+      .cmdImporterImage(1).ToolTipText = "Coller"
+      .cmdRecadrerLaSelection.ToolTipText = "Recadrer"
+      .optApercu(0).ToolTipText = "Convertir en noir et blanc"
+      .optApercu(1).ToolTipText = "Annuler"
+      .optInterieur(0).ToolTipText = "Supprimer les tracés intérieurs"
+      .optInterieur(1).ToolTipText = "Conserver les tracés intérieurs"
+      .cmdContoursLissageTransfert.ToolTipText = "Vectoriser"
+      .chkVoirPointsVecto.ToolTipText = "Affichage des points"
+      .cmdSauverVecto.ToolTipText = "Sauver en .DXF"
+      .cmdQuitterImpConv.ToolTipText = "Valider"
+   End With
    '**** traduction de la form principale ****
    With frmMiniCut2d
       .cmdLangue.Picture = frmImages.imgDrapeauFrancais.Picture
@@ -180,7 +198,7 @@ Public Sub LangueFrancais(LangueAUtiliser As String)
    Message(Titre, 1) = "Calcul impossible."
    'MessageBox n°2
    ReDim Preserve Message(Corps To Titre, 1 To 2)
-   Message(Corps, 2) = "Le répertoire \Bibliothèque n'est pas présent, il va être créé mais il sera vide : à vous de le remplir!"
+   Message(Corps, 2) = "Le répertoire \Bibliotheque n'est pas présent, il va être créé mais il sera vide : à vous de le remplir!"
    Message(Titre, 2) = "Initialisation de la bibliothèque"
    '
    ReDim Preserve Message(Corps To Titre, 1 To 3)
@@ -312,12 +330,12 @@ Public Sub LangueFrancais(LangueAUtiliser As String)
    '
    ReDim Preserve Message(Corps To Titre, 1 To 31)
    Message(Corps, 31) = "Un interrupteur de fin de course est ouvert, la procédure ne peut pas commencer." & vbCrLf & _
-                        "Dégagez tous les interrupteurs en tournant les moteurs à la main."
+                        "Dégagez tous les interrupteurs en tournant les tiges filetées à la main."
    Message(Titre, 31) = "Impossible de faire la procédure."
    '
    ReDim Preserve Message(Corps To Titre, 1 To 32)
    Message(Corps, 32) = "Un interrupteur d'origine est ouvert, la procédure ne peut pas commencer." & vbCrLf & _
-                        "Dégagez tous les interrupteurs en tournant les moteurs à la main."
+                        "Dégagez tous les interrupteurs en tournant les tiges filetées à la main."
    Message(Titre, 32) = "Impossible de faire la procédure."
    '
    ReDim Preserve Message(Corps To Titre, 1 To 33)
@@ -552,7 +570,12 @@ Public Sub LangueFrancais(LangueAUtiliser As String)
    Label(35) = "Origine verticale atteinte"
    '
    ReDim Preserve Label(1 To 36)
-   Label(36) = "Durée :"
+   Label(36) = "Image couleur ou niveaux de gris"
    '
-   
+   ReDim Preserve Label(1 To 37)
+   Label(37) = "Image noir et blanc"
+   '
+   ReDim Preserve Label(1 To 38)
+   Label(38) = "Origine horizontale atteinte"
+   '
 End Sub
